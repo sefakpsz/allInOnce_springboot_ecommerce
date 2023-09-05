@@ -1,5 +1,7 @@
 package sefakpsz.allInOnce.utils.jwt;
 
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,6 +15,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import sefakpsz.allInOnce.utils.constants.messages;
+import sefakpsz.allInOnce.utils.functions.SendHttpResponse;
 
 import java.io.IOException;
 
@@ -22,6 +26,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
+    private final ObjectMapper objectMapper;
 
     @Override
     protected void doFilterInternal(
@@ -33,18 +38,29 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String jwt;
         final String userEmail;
 
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            filterChain.doFilter(request, response);
+        if (authHeader == null) {
+            new SendHttpResponse(objectMapper).Run(response, HttpServletResponse.SC_UNAUTHORIZED, messages.missing_token);
+            return;
+        }
+
+        if (!authHeader.startsWith("Bearer ")) {
+            new SendHttpResponse(objectMapper).Run(response, HttpServletResponse.SC_UNAUTHORIZED, messages.invalid_token);
             return;
         }
 
         jwt = authHeader.substring(7);
 
         userEmail = jwtService.extractUsername(jwt);
+        System.out.println(userEmail);
 
-        if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+        if (userEmail == null) {
+            new SendHttpResponse(objectMapper).Run(response, HttpServletResponse.SC_UNAUTHORIZED, messages.unauthorized);
+            return;
+        }
+
+        if (SecurityContextHolder.getContext().getAuthentication() == null) {
+
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
-
             if (jwtService.isTokenValid(jwt, userDetails)) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         userDetails,
