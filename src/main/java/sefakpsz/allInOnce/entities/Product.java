@@ -3,6 +3,7 @@ package sefakpsz.allInOnce.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Set;
 
@@ -36,6 +37,6 @@ public class Product {
             mappedBy = "products")
     Set<Order> orders;
 
-    private Date createdDate;
-    private Date modifiedDate;
+    private LocalDateTime createdDate = LocalDateTime.now();
+    private LocalDateTime modifiedDate = LocalDateTime.now();
 }

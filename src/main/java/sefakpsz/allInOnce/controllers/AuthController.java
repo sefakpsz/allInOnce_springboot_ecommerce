@@ -10,6 +10,7 @@ import sefakpsz.allInOnce.daos.Auth.AuthLoginDao;
 import sefakpsz.allInOnce.daos.Auth.AuthRegisterDao;
 import sefakpsz.allInOnce.daos.Auth.AuthResponseDao;
 import sefakpsz.allInOnce.services.AuthService;
+import sefakpsz.allInOnce.utils.results.DataResult;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -19,14 +20,14 @@ public class AuthController {
     private final AuthService service;
 
     @PostMapping("/signUp")
-    public ResponseEntity<AuthResponseDao> register(
+    public ResponseEntity<DataResult<AuthResponseDao>> register(
             @RequestBody AuthRegisterDao request
     ) {
         return ResponseEntity.ok(service.signUp(request));
     }
 
     @PostMapping("/signIn")
-    public ResponseEntity<AuthResponseDao> login(
+    public ResponseEntity<DataResult<AuthResponseDao>> login(
             @RequestBody AuthLoginDao request
     ) {
         return ResponseEntity.ok(service.signIn(request));

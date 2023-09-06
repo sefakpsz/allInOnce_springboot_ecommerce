@@ -11,7 +11,12 @@ import sefakpsz.allInOnce.daos.Auth.AuthRegisterDao;
 import sefakpsz.allInOnce.daos.Auth.AuthResponseDao;
 import sefakpsz.allInOnce.enums.User.Role;
 import sefakpsz.allInOnce.repositories.UserRepository;
+import sefakpsz.allInOnce.utils.constants.messages;
 import sefakpsz.allInOnce.utils.jwt.JwtService;
+import sefakpsz.allInOnce.utils.results.DataResult;
+import sefakpsz.allInOnce.utils.results.ErrorDataResult;
+import sefakpsz.allInOnce.utils.results.ErrorResult;
+import sefakpsz.allInOnce.utils.results.SuccessDataResult;
 
 @Service
 @RequiredArgsConstructor
@@ -22,7 +27,7 @@ public class AuthService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
-    public AuthResponseDao signUp(AuthRegisterDao request) {
+    public DataResult<AuthResponseDao> signUp(AuthRegisterDao request) {
         var user = User.builder()
                 .firstname(request.getFirstname())
                 .lastname(request.getLastname())
@@ -35,12 +40,17 @@ public class AuthService {
 
         var jwtToken = jwtService.generateToken(user);
 
-        return AuthResponseDao.builder()
+        return new SuccessDataResult<AuthResponseDao>(AuthResponseDao.builder()
                 .token(jwtToken)
-                .build();
+                .build(), messages.success);
     }
 
-    public AuthResponseDao signIn(AuthLoginDao request) {
+    public DataResult<AuthResponseDao> signIn(AuthLoginDao request) {
+        var user = repository.findByEmail(request.getEmail());
+
+        if (user.toString().equals("Optional.empty"))
+            return new ErrorDataResult<AuthResponseDao>(null, messages.email_not_found);
+
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(),
@@ -48,14 +58,11 @@ public class AuthService {
                 )
         );
 
-        var user = repository.findByEmail(request.getEmail())
-                .orElseThrow();
+        var jwtToken = jwtService.generateToken(user.orElseThrow());
 
-        var jwtToken = jwtService.generateToken(user);
-
-        return AuthResponseDao.builder()
+        return new SuccessDataResult<AuthResponseDao>(AuthResponseDao.builder()
                 .token(jwtToken)
-                .build();
+                .build(), messages.success);
     }
 }
 

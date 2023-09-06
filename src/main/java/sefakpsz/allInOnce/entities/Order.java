@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import sefakpsz.allInOnce.enums.Order.OrderStatus;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Set;
 
@@ -33,6 +34,6 @@ public class Order {
             inverseJoinColumns = {@JoinColumn(name = "product_id")})
     Set<Product> products;
 
-    private Date createdDate;
-    private Date modifiedDate;
+    private LocalDateTime createdDate = LocalDateTime.now();
+    private LocalDateTime modifiedDate = LocalDateTime.now();
 }
