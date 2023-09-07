@@ -27,7 +27,7 @@ public class Product {
             cascade = {
                     CascadeType.REFRESH
             })
-    @JoinColumn(name = "category_id", nullable = true)
+    @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
     @ManyToMany(

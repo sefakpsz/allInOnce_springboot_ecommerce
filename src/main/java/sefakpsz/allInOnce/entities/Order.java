@@ -5,7 +5,6 @@ import lombok.*;
 import sefakpsz.allInOnce.enums.Order.OrderStatus;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.Set;
 
 @Data
@@ -22,7 +21,7 @@ public class Order {
     private Integer id;
 
     @Enumerated(EnumType.STRING)
-    private OrderStatus status;
+    private OrderStatus status = OrderStatus.Waiting;
 
     @ManyToMany(
             cascade = {
@@ -33,6 +32,13 @@ public class Order {
             joinColumns = {@JoinColumn(name = "order_id")},
             inverseJoinColumns = {@JoinColumn(name = "product_id")})
     Set<Product> products;
+
+    @ManyToOne(
+            cascade = {
+                    CascadeType.REMOVE
+            })
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     private LocalDateTime createdDate = LocalDateTime.now();
     private LocalDateTime modifiedDate = LocalDateTime.now();

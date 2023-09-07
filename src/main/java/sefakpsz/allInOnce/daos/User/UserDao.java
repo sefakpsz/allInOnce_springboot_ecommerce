@@ -11,6 +11,7 @@ import sefakpsz.allInOnce.enums.User.Role;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDao {
+    private Integer id;
     private String firstname;
     private String lastname;
     private String email;
