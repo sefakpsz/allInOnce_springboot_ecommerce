@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -30,12 +31,8 @@ public class Product {
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
-    @ManyToMany(
-            cascade = {
-                    CascadeType.REMOVE
-            },
-            mappedBy = "products")
-    Set<Order> orders;
+    @ManyToMany(mappedBy="products")
+    List<Order> orders;
 
     private LocalDateTime createdDate = LocalDateTime.now();
     private LocalDateTime modifiedDate = LocalDateTime.now();

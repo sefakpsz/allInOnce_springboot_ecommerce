@@ -5,4 +5,6 @@ import sefakpsz.allInOnce.entities.Product;
 
 public interface ProductRepository extends JpaRepository<Product, Integer> {
     Product findProductByTitle(String title);
+
+    Product findProductById(Integer id);
 }

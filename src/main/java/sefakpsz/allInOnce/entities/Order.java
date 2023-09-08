@@ -2,9 +2,12 @@ package sefakpsz.allInOnce.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import sefakpsz.allInOnce.enums.Order.OrderStatus;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -23,15 +26,13 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderStatus status = OrderStatus.Waiting;
 
-    @ManyToMany(
-            cascade = {
-                    CascadeType.REMOVE
-            })
-    @JoinTable(
-            name = "product_orders",
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @Fetch(FetchMode.SELECT)
+    @JoinTable(name = "product_orders",
             joinColumns = {@JoinColumn(name = "order_id")},
-            inverseJoinColumns = {@JoinColumn(name = "product_id")})
-    Set<Product> products;
+            inverseJoinColumns = {@JoinColumn(name = "product_id")}
+    )
+    List<Product> products;
 
     @ManyToOne(
             cascade = {

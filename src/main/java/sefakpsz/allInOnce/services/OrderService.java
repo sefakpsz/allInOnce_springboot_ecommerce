@@ -1,11 +1,14 @@
 package sefakpsz.allInOnce.services;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
+import sefakpsz.allInOnce.daos.Category.CategoryDao;
 import sefakpsz.allInOnce.daos.Order.OrderCreateDao;
 import sefakpsz.allInOnce.daos.Order.OrderDao;
 import sefakpsz.allInOnce.daos.Order.OrderUpdateProductsDao;
 import sefakpsz.allInOnce.daos.Order.OrderUpdateStatusDao;
+import sefakpsz.allInOnce.daos.Product.ProductDao;
 import sefakpsz.allInOnce.daos.User.UserDao;
 import sefakpsz.allInOnce.entities.Order;
 import sefakpsz.allInOnce.entities.ProductOrders;
@@ -31,16 +34,21 @@ public class OrderService {
         var user = GettingUser.Get();
 
         var ordersOfUser = repository.findOrdersByUser(user);
-        var lastOrderOfUser = ordersOfUser.get(ordersOfUser.size() - 1);
+        var ordersOfUserSize = ordersOfUser.size();
 
-        if (lastOrderOfUser.getStatus() == OrderStatus.Waiting)
-            return new ErrorResult(messages.order_already_exists);
+        if (ordersOfUserSize > 0) {
+            var lastOrderOfUser = (Order) ordersOfUser.toArray()[ordersOfUserSize - 1];
+
+            if (lastOrderOfUser.getStatus() == OrderStatus.Waiting)
+                return new ErrorResult(messages.order_already_exists);
+        }
+        if (!controlOfProductExistence(dao.getProductIds()))
+            return new ErrorResult(messages.product_not_found);
 
         var order = new Order();
         order.setUser(user);
 
-        if (!controlOfProductExistence(dao.getProductIds()))
-            return new ErrorResult(messages.product_not_found);
+        repository.save(order);
 
         for (var product : dao.getProductIds()) {
             var productOrders = new ProductOrders();
@@ -49,8 +57,6 @@ public class OrderService {
 
             productOrdersRepository.save(productOrders);
         }
-
-        repository.save(order);
 
         return new SuccessResult(messages.success);
     }
@@ -94,7 +100,7 @@ public class OrderService {
     public Result UpdateStatus(OrderUpdateStatusDao dao) {
         var user = GettingUser.Get();
 
-        var orderFromDb = repository.findById(dao.getOrderId());
+        var orderFromDb = repository.findById(dao.getId());
 
         if (orderFromDb.isEmpty())
             return new ErrorResult(messages.order_not_found);
@@ -139,9 +145,10 @@ public class OrderService {
             orderDao.setId(order.getId());
             orderDao.setStatus(order.getStatus());
             orderDao.setUser(userDao);
-            //orderDao.setProducts();
             orderDao.setCreatedDate(order.getCreatedDate());
             orderDao.setModifiedDate(order.getModifiedDate());
+
+            orderDao.setProducts(mappingProductsOfOrder(order));
 
             orderList.add(orderDao);
         }
@@ -149,8 +156,8 @@ public class OrderService {
         return new SuccessDataResult<ArrayList<OrderDao>>(orderList, messages.success);
     }
 
-    public DataResult<OrderDao> GetById(Integer OrderId) {
-        var order = repository.findById(OrderId);
+    public DataResult<OrderDao> GetById(Integer orderId) {
+        var order = repository.findById(orderId);
 
         if (order.isEmpty())
             return new ErrorDataResult<OrderDao>(null, messages.order_not_found);
@@ -171,19 +178,46 @@ public class OrderService {
         orderDao.setId(order.get().getId());
         orderDao.setStatus(order.get().getStatus());
         orderDao.setUser(userDao);
-        //orderDao.setProducts();
+
+        orderDao.setProducts(mappingProductsOfOrder(order.get()));
 
         return new SuccessDataResult<OrderDao>(orderDao, messages.success);
     }
 
     private boolean controlOfProductExistence(List<Integer> productIds) {
         for (var product : productIds) {
-            var productExists = productRepository.getById(product);
+            var productExists = productRepository.findProductById(product);
 
-            if (productExists.getId() == 0)
+            if (productExists == null)
                 return false;
         }
 
         return true;
+    }
+
+    private List<ProductDao> mappingProductsOfOrder(Order order) {
+        var productDaos = new ArrayList<ProductDao>();
+        var orderProducts = order.getProducts();
+
+        for (var product : orderProducts) {
+            var productDao = new ProductDao(
+                    product.getId(),
+                    product.getTitle(),
+                    product.getPrice(),
+                    product.getImageURL(),
+                    new CategoryDao(
+                            product.getCategory().getId(),
+                            product.getCategory().getTitle(),
+                            product.getCategory().getImageURL(),
+                            product.getCategory().getCreatedDate(),
+                            product.getCategory().getModifiedDate()
+                    ),
+                    product.getModifiedDate(),
+                    product.getCreatedDate()
+            );
+
+            productDaos.add(productDao);
+        }
+        return productDaos;
     }
 }

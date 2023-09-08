@@ -27,7 +27,7 @@ public class OrderController {
     }
 
     @PutMapping("/updateStatus")
-    public ResponseEntity<Result> update(@RequestParam OrderUpdateStatusDao dao) {
+    public ResponseEntity<Result> update(@RequestBody OrderUpdateStatusDao dao) {
         return ResponseEntity.ok(service.UpdateStatus(dao));
     }
 

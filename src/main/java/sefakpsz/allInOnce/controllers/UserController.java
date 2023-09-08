@@ -19,10 +19,16 @@ public class UserController {
     public ResponseEntity<DataResult> getMyInfo() {
         return ResponseEntity.ok(service.GetMyInfo());
     }
+
     @PutMapping("/changePassword")
     public ResponseEntity<Result> register(
             @RequestBody UserChangePasswordDao request
     ) {
         return ResponseEntity.ok(service.ChangePassword(request));
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<Result> delete(Integer userId) {
+        return ResponseEntity.ok(service.Delete(userId));
     }
 }

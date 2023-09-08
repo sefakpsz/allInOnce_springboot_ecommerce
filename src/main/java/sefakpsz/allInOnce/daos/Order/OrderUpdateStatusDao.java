@@ -11,6 +11,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderUpdateStatusDao {
-    private Integer orderId;
+    private Integer id;
     private OrderStatus status;
 }

@@ -49,6 +49,16 @@ public class UserService {
         userDao.setEmail(user.getEmail());
         userDao.setRole(user.getRole());
 
-        return new SuccessDataResult(userDao,messages.success);
+        return new SuccessDataResult(userDao, messages.success);
+    }
+
+    public Result Delete(Integer userId) {
+        var user = repository.findUserById(userId);
+        if (user == null)
+            return new ErrorResult(messages.user_not_found);
+
+        repository.delete(user);
+
+        return new SuccessResult(messages.success);
     }
 }
