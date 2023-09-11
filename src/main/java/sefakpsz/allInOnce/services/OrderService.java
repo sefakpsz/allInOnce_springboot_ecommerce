@@ -11,6 +11,7 @@ import sefakpsz.allInOnce.daos.Order.OrderUpdateStatusDao;
 import sefakpsz.allInOnce.daos.Product.ProductDao;
 import sefakpsz.allInOnce.daos.User.UserDao;
 import sefakpsz.allInOnce.entities.Order;
+import sefakpsz.allInOnce.entities.Product;
 import sefakpsz.allInOnce.entities.ProductOrders;
 import sefakpsz.allInOnce.enums.Order.OrderStatus;
 import sefakpsz.allInOnce.repositories.OrderRepository;
@@ -209,6 +210,7 @@ public class OrderService {
                             product.getCategory().getId(),
                             product.getCategory().getTitle(),
                             product.getCategory().getImageURL(),
+                            new ArrayList<>(),
                             product.getCategory().getCreatedDate(),
                             product.getCategory().getModifiedDate()
                     ),

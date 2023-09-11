@@ -44,6 +44,7 @@ public class UserService {
         var user = GettingUser.Get();
 
         var userDao = new UserDao();
+        userDao.setId(user.getId());
         userDao.setFirstname(user.getFirstname());
         userDao.setLastname(user.getLastname());
         userDao.setEmail(user.getEmail());

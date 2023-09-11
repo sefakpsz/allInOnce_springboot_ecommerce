@@ -24,14 +24,11 @@ public class Product {
     private Float price;
     private String imageURL;
 
-    @ManyToOne(
-            cascade = {
-                    CascadeType.REFRESH
-            })
-    @JoinColumn(name = "category_id", nullable = false)
+    @ManyToOne()
+    @JoinColumn(name = "category_id")
     private Category category;
 
-    @ManyToMany(mappedBy="products")
+    @ManyToMany(mappedBy = "products")
     List<Order> orders;
 
     private LocalDateTime createdDate = LocalDateTime.now();

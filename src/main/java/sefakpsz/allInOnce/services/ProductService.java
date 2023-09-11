@@ -84,19 +84,24 @@ public class ProductService {
         var ProductList = new ArrayList<ProductDao>();
         for (var product : products) {
             var categoryOfProduct = product.getCategory();
-            var categoryDao = new CategoryDao(
-                    categoryOfProduct.getId(),
-                    categoryOfProduct.getTitle(),
-                    categoryOfProduct.getImageURL(),
-                    categoryOfProduct.getCreatedDate(),
-                    categoryOfProduct.getModifiedDate()
-            );
 
             var productDao = new ProductDao();
 
+            if (categoryOfProduct != null) {
+                var categoryDao = new CategoryDao(
+                        categoryOfProduct.getId(),
+                        categoryOfProduct.getTitle(),
+                        categoryOfProduct.getImageURL(),
+                        new ArrayList<>(),
+                        categoryOfProduct.getCreatedDate(),
+                        categoryOfProduct.getModifiedDate()
+                );
+
+                productDao.setCategory(categoryDao);
+            }
+
             productDao.setId(product.getId());
             productDao.setTitle(product.getTitle());
-            productDao.setCategory(categoryDao);
             productDao.setImageURL(product.getImageURL());
             productDao.setPrice(product.getPrice());
             productDao.setCreatedDate(product.getCreatedDate());
@@ -115,23 +120,28 @@ public class ProductService {
             return new ErrorDataResult<ProductDao>(null, messages.product_not_found);
 
         var categoryOfProduct = product.get().getCategory();
-        var categoryDao = new CategoryDao(
-                categoryOfProduct.getId(),
-                categoryOfProduct.getTitle(),
-                categoryOfProduct.getImageURL(),
-                categoryOfProduct.getCreatedDate(),
-                categoryOfProduct.getModifiedDate()
-        );
 
-        var productDao = new ProductDao(
-                product.get().getId(),
-                product.get().getTitle(),
-                product.get().getPrice(),
-                product.get().getImageURL(),
-                categoryDao,
-                product.get().getModifiedDate(),
-                product.get().getCreatedDate()
-        );
+        var productDao = new ProductDao();
+
+        if (categoryOfProduct != null) {
+            var categoryDao = new CategoryDao(
+                    categoryOfProduct.getId(),
+                    categoryOfProduct.getTitle(),
+                    categoryOfProduct.getImageURL(),
+                    new ArrayList<>(),
+                    categoryOfProduct.getCreatedDate(),
+                    categoryOfProduct.getModifiedDate()
+            );
+
+            productDao.setCategory(categoryDao);
+        }
+
+        productDao.setId(product.get().getId());
+        productDao.setTitle(product.get().getTitle());
+        productDao.setImageURL(product.get().getImageURL());
+        productDao.setPrice(product.get().getPrice());
+        productDao.setCreatedDate(product.get().getCreatedDate());
+        productDao.setModifiedDate(product.get().getModifiedDate());
 
         return new SuccessDataResult<ProductDao>(productDao, messages.success);
     }

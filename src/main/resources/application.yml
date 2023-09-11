@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://javapostgre.caqttrjbwp7e.eu-west-2.rds.amazonaws.com:5432/allinonce
+    url: jdbc:postgresql://postgre.caqttrjbwp7e.eu-west-2.rds.amazonaws.com:5432/allinonce
     username: sefakpsz
-    password: Sefa1907?
+    password: wordigoteam1907
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:

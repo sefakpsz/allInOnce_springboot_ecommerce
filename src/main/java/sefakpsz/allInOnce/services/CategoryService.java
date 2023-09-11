@@ -6,8 +6,10 @@ import org.springframework.stereotype.Service;
 import sefakpsz.allInOnce.daos.Category.CategoryCreateDao;
 import sefakpsz.allInOnce.daos.Category.CategoryDao;
 import sefakpsz.allInOnce.daos.Category.CategoryUpdateDao;
+import sefakpsz.allInOnce.daos.Product.ProductDao;
 import sefakpsz.allInOnce.entities.Category;
 import sefakpsz.allInOnce.repositories.CategoryRepository;
+import sefakpsz.allInOnce.repositories.ProductRepository;
 import sefakpsz.allInOnce.utils.constants.messages;
 import sefakpsz.allInOnce.utils.results.*;
 
@@ -19,6 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CategoryService {
     private final CategoryRepository repository;
+    private final ProductRepository productRepository;
 
     public Result Create(CategoryCreateDao dao) {
         var category = new Category();
@@ -62,6 +65,14 @@ public class CategoryService {
         if (category.isEmpty())
             return new ErrorResult(messages.category_not_found);
 
+        var productsOfTheCategory = productRepository.findProductsByCategory(category.get());
+
+        for (var product : productsOfTheCategory) {
+            product.setCategory(null);
+
+            productRepository.save(product);
+        }
+
         repository.delete(category.get());
 
         return new SuccessResult(messages.success);
@@ -94,9 +105,27 @@ public class CategoryService {
 
         var categoryDao = new CategoryDao();
 
+        var productOfCateogry = category.get().getProducts();
+
+        var productsDao = new ArrayList<ProductDao>();
+
+        for (var product : productOfCateogry) {
+            var productDao = new ProductDao();
+
+            productDao.setPrice(product.getPrice());
+            productDao.setTitle(product.getTitle());
+            productDao.setId(product.getId());
+            productDao.setCreatedDate(product.getCreatedDate());
+            productDao.setModifiedDate(product.getModifiedDate());
+            productDao.setImageURL(product.getImageURL());
+
+            productsDao.add(productDao);
+        }
+
         categoryDao.setModifiedDate(category.get().getModifiedDate());
         categoryDao.setCreatedDate(category.get().getCreatedDate());
         categoryDao.setTitle(category.get().getTitle());
+        categoryDao.setProducts(productsDao);
         categoryDao.setImageURL(category.get().getTitle());
         categoryDao.setId(category.get().getId());
 

@@ -1,13 +1,11 @@
 package sefakpsz.allInOnce.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Builder
@@ -23,6 +21,9 @@ public class Category {
     private Integer id;
     private String title;
     private String imageURL;
+
+    @OneToMany(mappedBy = "category")
+    private List<Product> products;
 
     private LocalDateTime createdDate = LocalDateTime.now();
     private LocalDateTime modifiedDate = LocalDateTime.now();
