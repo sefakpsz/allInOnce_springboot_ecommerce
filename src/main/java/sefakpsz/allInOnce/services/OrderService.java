@@ -51,10 +51,14 @@ public class OrderService {
 
         repository.save(order);
 
-        for (var product : dao.getProductIds()) {
+        for (var productId : dao.getProductIds()) {
             var productOrders = new ProductOrders();
-            productOrders.setOrderId(order.getId());
-            productOrders.setProductId(product);
+
+            productOrders.setOrder(order);
+
+            var product = productRepository.findProductById(productId);
+
+            productOrders.setProduct(product);
 
             productOrdersRepository.save(productOrders);
         }
@@ -78,22 +82,23 @@ public class OrderService {
 
         var productOrders = productOrdersRepository.findProductOrdersByOrderId(dao.getOrderId());
 
-        for (var productOrder : productOrders) {
+        /*for (var productOrder : productOrders) {
             if (!dao.getProductIds().contains(productOrder.getProductId())) {
                 productOrdersRepository.delete(productOrder);
             }
-        }
+        }*/
 
-        for (var product : dao.getProductIds()) {
+        /*for (var product : dao.getProductIds()) {
             var productOrderFromDb = productOrdersRepository.findProductOrdersByProductId(product);
             if (productOrderFromDb == null) {
                 var productOrder = new ProductOrders();
+
                 productOrder.setProductId(product);
                 productOrder.setOrderId(dao.getOrderId());
 
                 productOrdersRepository.save(productOrder);
             }
-        }
+        }*/
 
         return new SuccessResult(messages.success);
     }
@@ -198,25 +203,30 @@ public class OrderService {
 
     private List<ProductDao> mappingProductsOfOrder(Order order) {
         var productDaos = new ArrayList<ProductDao>();
-        var orderProducts = order.getProducts();
+        var orderProducts = order.getProductOrders();
 
-        for (var product : orderProducts) {
+        for (var orderProduct : orderProducts) {
+            var product = orderProduct.getProduct();
+
             var productDao = new ProductDao(
                     product.getId(),
                     product.getTitle(),
                     product.getPrice(),
                     product.getImageURL(),
-                    new CategoryDao(
-                            product.getCategory().getId(),
-                            product.getCategory().getTitle(),
-                            product.getCategory().getImageURL(),
-                            new ArrayList<>(),
-                            product.getCategory().getCreatedDate(),
-                            product.getCategory().getModifiedDate()
-                    ),
+                    null,
                     product.getModifiedDate(),
                     product.getCreatedDate()
             );
+
+            if (product.getCategory() != null) {
+                productDao.setCategory(new CategoryDao());
+
+                productDao.getCategory().setId(product.getCategory().getId());
+                productDao.getCategory().setTitle(product.getCategory().getTitle());
+                productDao.getCategory().setImageURL(product.getCategory().getImageURL());
+                productDao.getCategory().setCreatedDate(product.getCategory().getCreatedDate());
+                productDao.getCategory().setModifiedDate(product.getCategory().getModifiedDate());
+            }
 
             productDaos.add(productDao);
         }

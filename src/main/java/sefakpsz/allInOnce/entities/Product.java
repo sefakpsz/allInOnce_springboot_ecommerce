@@ -28,8 +28,8 @@ public class Product {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @ManyToMany(mappedBy = "products")
-    List<Order> orders;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
+    List<ProductOrders> productOrders;
 
     private LocalDateTime createdDate = LocalDateTime.now();
     private LocalDateTime modifiedDate = LocalDateTime.now();

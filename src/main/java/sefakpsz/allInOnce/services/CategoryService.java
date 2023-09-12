@@ -105,27 +105,9 @@ public class CategoryService {
 
         var categoryDao = new CategoryDao();
 
-        var productOfCateogry = category.get().getProducts();
-
-        var productsDao = new ArrayList<ProductDao>();
-
-        for (var product : productOfCateogry) {
-            var productDao = new ProductDao();
-
-            productDao.setPrice(product.getPrice());
-            productDao.setTitle(product.getTitle());
-            productDao.setId(product.getId());
-            productDao.setCreatedDate(product.getCreatedDate());
-            productDao.setModifiedDate(product.getModifiedDate());
-            productDao.setImageURL(product.getImageURL());
-
-            productsDao.add(productDao);
-        }
-
         categoryDao.setModifiedDate(category.get().getModifiedDate());
         categoryDao.setCreatedDate(category.get().getCreatedDate());
         categoryDao.setTitle(category.get().getTitle());
-        categoryDao.setProducts(productsDao);
         categoryDao.setImageURL(category.get().getTitle());
         categoryDao.setId(category.get().getId());
 

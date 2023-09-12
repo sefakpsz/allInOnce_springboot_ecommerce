@@ -92,7 +92,6 @@ public class ProductService {
                         categoryOfProduct.getId(),
                         categoryOfProduct.getTitle(),
                         categoryOfProduct.getImageURL(),
-                        new ArrayList<>(),
                         categoryOfProduct.getCreatedDate(),
                         categoryOfProduct.getModifiedDate()
                 );
@@ -128,7 +127,6 @@ public class ProductService {
                     categoryOfProduct.getId(),
                     categoryOfProduct.getTitle(),
                     categoryOfProduct.getImageURL(),
-                    new ArrayList<>(),
                     categoryOfProduct.getCreatedDate(),
                     categoryOfProduct.getModifiedDate()
             );

@@ -15,17 +15,19 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Table(name = "product_orders")
-@Embeddable
+//@Embeddable
 public class ProductOrders implements Serializable {
     @Id
     @GeneratedValue
     private Integer id;
 
-    @Column(name = "order_id")
-    Integer orderId;
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    Order order;
 
-    @Column(name = "product_id")
-    Integer productId;
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    Product product;
 
     private LocalDateTime createdDate = LocalDateTime.now();
     private LocalDateTime modifiedDate = LocalDateTime.now();

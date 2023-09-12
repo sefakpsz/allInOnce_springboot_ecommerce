@@ -16,7 +16,6 @@ public class CategoryDao {
     private Integer id;
     private String title;
     private String imageURL;
-    private List<ProductDao> products = new ArrayList<>();
 
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;

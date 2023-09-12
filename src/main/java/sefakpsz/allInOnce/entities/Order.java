@@ -26,13 +26,8 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderStatus status = OrderStatus.Waiting;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    @Fetch(FetchMode.SELECT)
-    @JoinTable(name = "product_orders",
-            joinColumns = {@JoinColumn(name = "order_id")},
-            inverseJoinColumns = {@JoinColumn(name = "product_id")}
-    )
-    List<Product> products;
+    @OneToMany(mappedBy = "order", cascade = CascadeType.REMOVE)
+    List<ProductOrders> productOrders;
 
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
