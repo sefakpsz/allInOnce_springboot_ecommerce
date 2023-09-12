@@ -20,7 +20,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\":\"ayso@mail.com\",\r\n    \"password\":\"ayso\"\r\n}",
+							"raw": "{\r\n    \"email\":\"\",\r\n    \"password\":\"\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -178,6 +178,39 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/user/delete?userId=152",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"user",
+								"delete"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "152"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -191,7 +224,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"title\":\"ayso2\",\r\n    \"price\":0,\r\n    \"imageURL\":\"\"\r\n}",
+							"raw": "{\r\n    \"title\":\"\",\r\n    \"price\":0,\r\n    \"imageURL\":\"\",\r\n    \"categoryId\":152\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -218,7 +251,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"title\": \"\",\r\n    \"price\": 0,\r\n    \"imageURL\": \"\"\r\n}",
+							"raw": "{\r\n    \"id\":\"1\",\r\n    \"title\": \"s\",\r\n    \"price\": 0,\r\n    \"imageURL\": \"\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -226,19 +259,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/product/update?productId=1",
+							"raw": "{{url}}/product/update",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"product",
 								"update"
-							],
-							"query": [
-								{
-									"key": "productId",
-									"value": "1"
-								}
 							]
 						}
 					},
@@ -259,7 +286,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/product/delete?productId=0",
+							"raw": "{{url}}/product/delete?productId=303",
 							"host": [
 								"{{url}}"
 							],
@@ -270,7 +297,7 @@
 							"query": [
 								{
 									"key": "productId",
-									"value": "0"
+									"value": "303"
 								}
 							]
 						}
@@ -306,6 +333,42 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Get By Id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/product/getById?productId=352",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"product",
+								"getById"
+							],
+							"query": [
+								{
+									"key": "productId",
+									"value": "352"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -319,7 +382,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"title\":\"\",\r\n    \"imageURL\":\"\"\r\n}",
+							"raw": "{\r\n    \"title\":\"sefa\",\r\n    \"imageURL\":\"sefa\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -346,7 +409,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"title\": \"\",\r\n    \"imageURL\": \"\"\r\n}",
+							"raw": "{\r\n    \"categoryId\":\"2\",\r\n    \"title\": \"sefa4\",\r\n    \"imageURL\": \"sefa\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -354,19 +417,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/category/update?categoryId=1",
+							"raw": "{{url}}/category/update",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"category",
 								"update"
-							],
-							"query": [
-								{
-									"key": "categoryId",
-									"value": "1"
-								}
 							]
 						}
 					},
@@ -387,7 +444,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/category/delete?categoryId=0",
+							"raw": "{{url}}/category/delete?categoryId=102",
 							"host": [
 								"{{url}}"
 							],
@@ -398,7 +455,7 @@
 							"query": [
 								{
 									"key": "categoryId",
-									"value": "0"
+									"value": "102"
 								}
 							]
 						}
@@ -434,6 +491,42 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Get By Id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/category/getById?categoryId=152",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"category",
+								"getById"
+							],
+							"query": [
+								{
+									"key": "categoryId",
+									"value": "152"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -447,7 +540,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"status\":\"\"\r\n}",
+							"raw": "{\r\n    \"productIds\":[\r\n        352,\r\n        353\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -468,13 +561,13 @@
 					"response": []
 				},
 				{
-					"name": "Update",
+					"name": "Update Products",
 					"request": {
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"status\": \"\"\r\n}",
+							"raw": "{\r\n    \"orderId\": 102,\r\n    \"productIds\": [\r\n        1,\r\n        2\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -482,19 +575,40 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/order/update?orderId=1",
+							"raw": "{{url}}/order/updateProducts",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"order",
-								"update"
-							],
-							"query": [
-								{
-									"key": "orderId",
-									"value": "1"
+								"updateProducts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Status",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 102,\r\n    \"status\": \"Cancelled\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
 								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/order/updateStatus",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"order",
+								"updateStatus"
 							]
 						}
 					},
@@ -515,7 +629,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/order/delete?orderId=1",
+							"raw": "{{url}}/order/delete?orderId=553",
 							"host": [
 								"{{url}}"
 							],
@@ -526,7 +640,7 @@
 							"query": [
 								{
 									"key": "orderId",
-									"value": "1"
+									"value": "553"
 								}
 							]
 						}
@@ -558,6 +672,42 @@
 							"path": [
 								"order",
 								"getList"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get By Id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/order/getById?orderId=602",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"order",
+								"getById"
+							],
+							"query": [
+								{
+									"key": "orderId",
+									"value": "602"
+								}
 							]
 						}
 					},
@@ -604,7 +754,7 @@
 		},
 		{
 			"key": "token",
-			"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJheXNvQG1haWwuY29tIiwiaWF0IjoxNjkzOTgxMzgxLCJleHAiOjE2OTM5ODI4MjF9.on3fFx2kyb6OUaA5NHtR-2z-06M4wlCQMHMzLSQu1LY",
+			"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIiLCJpYXQiOjE2OTQ0OTgyNDksImV4cCI6MTY5NDUwOTA0OX0.WZW3ubEacGDTLdTMdNoGnUKSWhDCDfZJmELOj8WvRF4",
 			"type": "string"
 		}
 	]
