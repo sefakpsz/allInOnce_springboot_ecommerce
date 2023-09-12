@@ -27,4 +27,6 @@ public class messages {
     public static final String order_already_exists = "Order Already Exists!";
     public static final String order_cant_update = "Order Already Completed!";
 
+    public static final String not_blank = "Field Has To Be Filled!";
+
 }

@@ -1,5 +1,6 @@
 package sefakpsz.allInOnce.controllers;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,14 +22,14 @@ public class AuthController {
 
     @PostMapping("/signUp")
     public ResponseEntity<DataResult<AuthResponseDao>> register(
-            @RequestBody AuthRegisterDao request
+            @Valid @RequestBody AuthRegisterDao request
     ) {
         return ResponseEntity.ok(service.signUp(request));
     }
 
     @PostMapping("/signIn")
     public ResponseEntity<DataResult<AuthResponseDao>> login(
-            @RequestBody AuthLoginDao request
+            @Valid @RequestBody AuthLoginDao request
     ) {
         return ResponseEntity.ok(service.signIn(request));
     }

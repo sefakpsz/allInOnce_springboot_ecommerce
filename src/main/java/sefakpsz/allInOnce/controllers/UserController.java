@@ -1,5 +1,7 @@
 package sefakpsz.allInOnce.controllers;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,13 +24,13 @@ public class UserController {
 
     @PutMapping("/changePassword")
     public ResponseEntity<Result> register(
-            @RequestBody UserChangePasswordDao request
+            @Valid @RequestBody UserChangePasswordDao request
     ) {
         return ResponseEntity.ok(service.ChangePassword(request));
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<Result> delete(Integer userId) {
+    public ResponseEntity<Result> delete(@Valid @RequestParam @NotNull Integer userId) {
         return ResponseEntity.ok(service.Delete(userId));
     }
 }

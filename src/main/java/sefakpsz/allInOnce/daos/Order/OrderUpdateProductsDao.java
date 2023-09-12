@@ -1,5 +1,7 @@
 package sefakpsz.allInOnce.daos.Order;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,6 +13,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderUpdateProductsDao {
+    @NotNull
     private Integer orderId;
+
+    @NotEmpty
     private List<Integer> productIds;
 }

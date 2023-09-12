@@ -1,5 +1,7 @@
 package sefakpsz.allInOnce.controllers;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,17 +19,17 @@ public class OrderController {
     private final OrderService service;
 
     @PostMapping("/create")
-    public ResponseEntity<Result> create(@RequestBody OrderCreateDao dao) {
+    public ResponseEntity<Result> create(@Valid @RequestBody OrderCreateDao dao) {
         return ResponseEntity.ok(service.Create(dao));
     }
 
     @PutMapping("/updateProducts")
-    public ResponseEntity<Result> update(@RequestBody OrderUpdateProductsDao dao) {
+    public ResponseEntity<Result> update(@Valid @RequestBody OrderUpdateProductsDao dao) {
         return ResponseEntity.ok(service.UpdateProducts(dao));
     }
 
     @PutMapping("/updateStatus")
-    public ResponseEntity<Result> update(@RequestBody OrderUpdateStatusDao dao) {
+    public ResponseEntity<Result> update(@Valid @RequestBody OrderUpdateStatusDao dao) {
         return ResponseEntity.ok(service.UpdateStatus(dao));
     }
 
@@ -37,12 +39,12 @@ public class OrderController {
     }
 
     @GetMapping("/getById")
-    public ResponseEntity<Result> getById(@RequestParam Integer orderId) {
+    public ResponseEntity<Result> getById(@Valid @RequestParam @NotNull Integer orderId) {
         return ResponseEntity.ok(service.GetById(orderId));
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<Result> delete(@RequestParam Integer orderId) {
+    public ResponseEntity<Result> delete(@Valid @RequestParam Integer orderId) {
         return ResponseEntity.ok(service.Delete(orderId));
     }
 }

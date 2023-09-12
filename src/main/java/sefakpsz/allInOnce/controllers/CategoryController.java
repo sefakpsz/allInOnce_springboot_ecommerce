@@ -1,5 +1,7 @@
 package sefakpsz.allInOnce.controllers;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,12 +20,12 @@ public class CategoryController {
     private final CategoryService service;
 
     @PostMapping("/create")
-    public ResponseEntity<Result> create(@RequestBody CategoryCreateDao dao) {
+    public ResponseEntity<Result> create(@Valid @RequestBody CategoryCreateDao dao) {
         return ResponseEntity.ok(service.Create(dao));
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Result> update(@RequestBody CategoryUpdateDao dao) {
+    public ResponseEntity<Result> update(@Valid @RequestBody CategoryUpdateDao dao) {
         return ResponseEntity.ok(service.Update(dao));
     }
 
@@ -33,12 +35,12 @@ public class CategoryController {
     }
 
     @GetMapping("/getById")
-    public ResponseEntity<Result> getById(@RequestParam Integer categoryId) {
+    public ResponseEntity<Result> getById(@Valid @RequestParam @NotNull Integer categoryId) {
         return ResponseEntity.ok(service.GetById(categoryId));
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<Result> delete(@RequestParam Integer categoryId) {
+    public ResponseEntity<Result> delete(@Valid @RequestParam @NotNull Integer categoryId) {
         return ResponseEntity.ok(service.Delete(categoryId));
     }
 }

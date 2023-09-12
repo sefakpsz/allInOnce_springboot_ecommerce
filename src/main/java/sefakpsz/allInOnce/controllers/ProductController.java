@@ -1,5 +1,7 @@
 package sefakpsz.allInOnce.controllers;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,12 +20,12 @@ public class ProductController {
     private final ProductService service;
 
     @PostMapping("/create")
-    public ResponseEntity<Result> create(@RequestBody ProductCreateDao dao) {
+    public ResponseEntity<Result> create(@Valid @RequestBody ProductCreateDao dao) {
         return ResponseEntity.ok(service.Create(dao));
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Result> update(@RequestBody ProductUpdateDao dao) {
+    public ResponseEntity<Result> update(@Valid@RequestBody ProductUpdateDao dao) {
         return ResponseEntity.ok(service.Update(dao));
     }
 
@@ -33,12 +35,12 @@ public class ProductController {
     }
 
     @GetMapping("/getById")
-    public ResponseEntity<Result> getById(@RequestParam Integer productId) {
+    public ResponseEntity<Result> getById(@Valid @RequestParam @NotNull Integer productId) {
         return ResponseEntity.ok(service.GetById(productId));
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<Result> delete(@RequestParam Integer productId) {
+    public ResponseEntity<Result> delete(@Valid @RequestParam @NotNull  Integer productId) {
         return ResponseEntity.ok(service.Delete(productId));
     }
 }
