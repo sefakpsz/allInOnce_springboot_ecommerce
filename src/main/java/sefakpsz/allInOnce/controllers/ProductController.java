@@ -21,26 +21,31 @@ public class ProductController {
 
     @PostMapping("/create")
     public ResponseEntity<Result> create(@Valid @RequestBody ProductCreateDao dao) {
-        return ResponseEntity.ok(service.Create(dao));
+        var result = service.Create(dao);
+        return ResponseEntity.status(result.isSuccess() ? 200 : 400).body(result);
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Result> update(@Valid@RequestBody ProductUpdateDao dao) {
-        return ResponseEntity.ok(service.Update(dao));
+    public ResponseEntity<Result> update(@Valid @RequestBody ProductUpdateDao dao) {
+        var result = service.Update(dao);
+        return ResponseEntity.status(result.isSuccess() ? 200 : 400).body(result);
     }
 
     @GetMapping("/getList")
     public ResponseEntity<Result> getList() {
-        return ResponseEntity.ok(service.GetList());
+        var result = service.GetList();
+        return ResponseEntity.status(result.isSuccess() ? 200 : 400).body(result);
     }
 
     @GetMapping("/getById")
     public ResponseEntity<Result> getById(@Valid @RequestParam @NotNull Integer productId) {
-        return ResponseEntity.ok(service.GetById(productId));
+        var result = service.GetById(productId);
+        return ResponseEntity.status(result.isSuccess() ? 200 : 400).body(result);
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<Result> delete(@Valid @RequestParam @NotNull  Integer productId) {
-        return ResponseEntity.ok(service.Delete(productId));
+    public ResponseEntity<Result> delete(@Valid @RequestParam @NotNull Integer productId) {
+        var result = service.Delete(productId);
+        return ResponseEntity.status(result.isSuccess() ? 200 : 400).body(result);
     }
 }

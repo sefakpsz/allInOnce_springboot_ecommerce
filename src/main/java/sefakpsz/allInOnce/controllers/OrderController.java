@@ -3,6 +3,7 @@ package sefakpsz.allInOnce.controllers;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sefakpsz.allInOnce.daos.Order.OrderCreateDao;
@@ -20,31 +21,37 @@ public class OrderController {
 
     @PostMapping("/create")
     public ResponseEntity<Result> create(@Valid @RequestBody OrderCreateDao dao) {
-        return ResponseEntity.ok(service.Create(dao));
+        var result = service.Create(dao);
+        return ResponseEntity.status(result.isSuccess() ? 200 : 400).body(result);
     }
 
     @PutMapping("/updateProducts")
     public ResponseEntity<Result> update(@Valid @RequestBody OrderUpdateProductsDao dao) {
-        return ResponseEntity.ok(service.UpdateProducts(dao));
+        var result = service.UpdateProducts(dao);
+        return ResponseEntity.status(result.isSuccess() ? 200 : 400).body(result);
     }
 
     @PutMapping("/updateStatus")
     public ResponseEntity<Result> update(@Valid @RequestBody OrderUpdateStatusDao dao) {
-        return ResponseEntity.ok(service.UpdateStatus(dao));
+        var result = service.UpdateStatus(dao);
+        return ResponseEntity.status(result.isSuccess() ? 200 : 400).body(result);
     }
 
     @GetMapping("/getList")
     public ResponseEntity<Result> getList() {
-        return ResponseEntity.ok(service.GetList());
+        var result = service.GetList();
+        return ResponseEntity.status(result.isSuccess() ? 200 : 400).body(result);
     }
 
     @GetMapping("/getById")
     public ResponseEntity<Result> getById(@Valid @RequestParam @NotNull Integer orderId) {
-        return ResponseEntity.ok(service.GetById(orderId));
+        var result = service.GetById(orderId);
+        return ResponseEntity.status(result.isSuccess() ? 200 : 400).body(result);
     }
 
     @DeleteMapping("/delete")
     public ResponseEntity<Result> delete(@Valid @RequestParam Integer orderId) {
-        return ResponseEntity.ok(service.Delete(orderId));
+        var result = service.Delete(orderId);
+        return ResponseEntity.status(result.isSuccess() ? 200 : 400).body(result);
     }
 }

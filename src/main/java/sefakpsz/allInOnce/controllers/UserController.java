@@ -3,6 +3,7 @@ package sefakpsz.allInOnce.controllers;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sefakpsz.allInOnce.daos.User.UserChangePasswordDao;
@@ -19,18 +20,19 @@ public class UserController {
 
     @GetMapping("/getMyInfo")
     public ResponseEntity<DataResult> getMyInfo() {
-        return ResponseEntity.ok(service.GetMyInfo());
+        var result = service.GetMyInfo();
+        return ResponseEntity.status(result.isSuccess() ? 200 : 400).body(result);
     }
 
     @PutMapping("/changePassword")
-    public ResponseEntity<Result> register(
-            @Valid @RequestBody UserChangePasswordDao request
-    ) {
-        return ResponseEntity.ok(service.ChangePassword(request));
+    public ResponseEntity<Result> register(@Valid @RequestBody UserChangePasswordDao request) {
+        var result = service.ChangePassword(request);
+        return ResponseEntity.status(result.isSuccess() ? 200 : 400).body(result);
     }
 
     @DeleteMapping("/delete")
     public ResponseEntity<Result> delete(@Valid @RequestParam @NotNull Integer userId) {
-        return ResponseEntity.ok(service.Delete(userId));
+        var result = service.Delete(userId);
+        return ResponseEntity.status(result.isSuccess() ? 200 : 400).body(result);
     }
 }
