@@ -6,9 +6,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import sefakpsz.allInOnce.daos.Category.CategoryCreateDao;
-import sefakpsz.allInOnce.daos.Category.CategoryUpdateDao;
-import sefakpsz.allInOnce.daos.User.UserChangePasswordDao;
+import sefakpsz.allInOnce.dtos.Category.CategoryCreateDto;
+import sefakpsz.allInOnce.dtos.Category.CategoryUpdateDto;
+import sefakpsz.allInOnce.dtos.User.UserChangePasswordDto;
 import sefakpsz.allInOnce.services.CategoryService;
 import sefakpsz.allInOnce.utils.results.DataResult;
 import sefakpsz.allInOnce.utils.results.Result;
@@ -21,14 +21,14 @@ public class CategoryController {
     private final CategoryService service;
 
     @PostMapping("/create")
-    public ResponseEntity<Result> create(@Valid @RequestBody CategoryCreateDao dao) {
-        var result = service.Create(dao);
+    public ResponseEntity<Result> create(@Valid @RequestBody CategoryCreateDto Dto) {
+        var result = service.Create(Dto);
         return ResponseEntity.status(result.isSuccess() ? 200 : 400).body(result);
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Result> update(@Valid @RequestBody CategoryUpdateDao dao) {
-        var result = service.Update(dao);
+    public ResponseEntity<Result> update(@Valid @RequestBody CategoryUpdateDto Dto) {
+        var result = service.Update(Dto);
         return ResponseEntity.status(result.isSuccess() ? 200 : 400).body(result);
     }
 

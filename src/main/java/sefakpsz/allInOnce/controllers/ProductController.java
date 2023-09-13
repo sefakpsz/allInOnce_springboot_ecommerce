@@ -5,10 +5,10 @@ import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import sefakpsz.allInOnce.daos.Category.CategoryCreateDao;
-import sefakpsz.allInOnce.daos.Category.CategoryUpdateDao;
-import sefakpsz.allInOnce.daos.Product.ProductCreateDao;
-import sefakpsz.allInOnce.daos.Product.ProductUpdateDao;
+import sefakpsz.allInOnce.dtos.Category.CategoryCreateDto;
+import sefakpsz.allInOnce.dtos.Category.CategoryUpdateDto;
+import sefakpsz.allInOnce.dtos.Product.ProductCreateDto;
+import sefakpsz.allInOnce.dtos.Product.ProductUpdateDto;
 import sefakpsz.allInOnce.services.ProductService;
 import sefakpsz.allInOnce.utils.results.Result;
 
@@ -20,14 +20,14 @@ public class ProductController {
     private final ProductService service;
 
     @PostMapping("/create")
-    public ResponseEntity<Result> create(@Valid @RequestBody ProductCreateDao dao) {
-        var result = service.Create(dao);
+    public ResponseEntity<Result> create(@Valid @RequestBody ProductCreateDto Dto) {
+        var result = service.Create(Dto);
         return ResponseEntity.status(result.isSuccess() ? 200 : 400).body(result);
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Result> update(@Valid @RequestBody ProductUpdateDao dao) {
-        var result = service.Update(dao);
+    public ResponseEntity<Result> update(@Valid @RequestBody ProductUpdateDto Dto) {
+        var result = service.Update(Dto);
         return ResponseEntity.status(result.isSuccess() ? 200 : 400).body(result);
     }
 

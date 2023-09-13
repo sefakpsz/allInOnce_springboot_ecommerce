@@ -6,9 +6,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import sefakpsz.allInOnce.entities.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import sefakpsz.allInOnce.daos.Auth.AuthLoginDao;
-import sefakpsz.allInOnce.daos.Auth.AuthRegisterDao;
-import sefakpsz.allInOnce.daos.Auth.AuthResponseDao;
+import sefakpsz.allInOnce.dtos.Auth.AuthLoginDto;
+import sefakpsz.allInOnce.dtos.Auth.AuthRegisterDto;
+import sefakpsz.allInOnce.dtos.Auth.AuthResponseDto;
 import sefakpsz.allInOnce.enums.User.Role;
 import sefakpsz.allInOnce.repositories.UserRepository;
 import sefakpsz.allInOnce.utils.constants.messages;
@@ -27,7 +27,7 @@ public class AuthService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
-    public DataResult<AuthResponseDao> signUp(AuthRegisterDao request) {
+    public DataResult<AuthResponseDto> signUp(AuthRegisterDto request) {
         var user = User.builder()
                 .firstname(request.getFirstname())
                 .lastname(request.getLastname())
@@ -40,16 +40,16 @@ public class AuthService {
 
         var jwtToken = jwtService.generateToken(user);
 
-        return new SuccessDataResult<AuthResponseDao>(AuthResponseDao.builder()
+        return new SuccessDataResult<AuthResponseDto>(AuthResponseDto.builder()
                 .token(jwtToken)
                 .build(), messages.success);
     }
 
-    public DataResult<AuthResponseDao> signIn(AuthLoginDao request) {
+    public DataResult<AuthResponseDto> signIn(AuthLoginDto request) {
         var user = repository.findByEmail(request.getEmail());
 
         if (user.toString().equals("Optional.empty"))
-            return new ErrorDataResult<AuthResponseDao>(null, messages.email_not_found);
+            return new ErrorDataResult<AuthResponseDto>(null, messages.email_not_found);
 
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -60,7 +60,7 @@ public class AuthService {
 
         var jwtToken = jwtService.generateToken(user.orElseThrow());
 
-        return new SuccessDataResult<AuthResponseDao>(AuthResponseDao.builder()
+        return new SuccessDataResult<AuthResponseDto>(AuthResponseDto.builder()
                 .token(jwtToken)
                 .build(), messages.success);
     }

@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import sefakpsz.allInOnce.daos.Auth.AuthLoginDao;
-import sefakpsz.allInOnce.daos.Auth.AuthRegisterDao;
-import sefakpsz.allInOnce.daos.Auth.AuthResponseDao;
+import sefakpsz.allInOnce.dtos.Auth.AuthLoginDto;
+import sefakpsz.allInOnce.dtos.Auth.AuthRegisterDto;
+import sefakpsz.allInOnce.dtos.Auth.AuthResponseDto;
 import sefakpsz.allInOnce.services.AuthService;
 import sefakpsz.allInOnce.utils.results.DataResult;
 
@@ -22,13 +22,13 @@ public class AuthController {
     private final AuthService service;
 
     @PostMapping("/signUp")
-    public ResponseEntity<DataResult<AuthResponseDao>> register(@Valid @RequestBody AuthRegisterDao request) {
+    public ResponseEntity<DataResult<AuthResponseDto>> register(@Valid @RequestBody AuthRegisterDto request) {
         var result = service.signUp(request);
         return ResponseEntity.status(result.isSuccess() ? 200 : 400).body(result);
     }
 
     @PostMapping("/signIn")
-    public ResponseEntity<DataResult<AuthResponseDao>> login(@Valid @RequestBody AuthLoginDao request) {
+    public ResponseEntity<DataResult<AuthResponseDto>> login(@Valid @RequestBody AuthLoginDto request) {
         var result = service.signIn(request);
         return ResponseEntity.status(result.isSuccess() ? 200 : 400).body(result);
     }

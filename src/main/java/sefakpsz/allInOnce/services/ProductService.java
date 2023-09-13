@@ -2,11 +2,11 @@ package sefakpsz.allInOnce.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import sefakpsz.allInOnce.daos.Category.CategoryDao;
-import sefakpsz.allInOnce.daos.Product.ProductCreateDao;
-import sefakpsz.allInOnce.daos.Product.ProductDao;
-import sefakpsz.allInOnce.daos.Product.ProductUpdateDao;
-import sefakpsz.allInOnce.daos.Product.ProductUpdateDao;
+import sefakpsz.allInOnce.dtos.Category.CategoryDto;
+import sefakpsz.allInOnce.dtos.Product.ProductCreateDto;
+import sefakpsz.allInOnce.dtos.Product.ProductDto;
+import sefakpsz.allInOnce.dtos.Product.ProductUpdateDto;
+import sefakpsz.allInOnce.dtos.Product.ProductUpdateDto;
 import sefakpsz.allInOnce.entities.Product;
 import sefakpsz.allInOnce.repositories.CategoryRepository;
 import sefakpsz.allInOnce.repositories.ProductRepository;
@@ -23,22 +23,22 @@ public class ProductService {
     private final ProductRepository repository;
     private final CategoryRepository categoryRepository;
 
-    public Result Create(ProductCreateDao dao) {
-        var titleExists = repository.findProductByTitle(dao.getTitle());
+    public Result Create(ProductCreateDto Dto) {
+        var titleExists = repository.findProductByTitle(Dto.getTitle());
 
         if (titleExists != null)
             return new ErrorResult(messages.product_already_exists);
 
-        var category = categoryRepository.findById(dao.getCategoryId());
+        var category = categoryRepository.findById(Dto.getCategoryId());
 
         if (category.isEmpty())
             return new ErrorResult(messages.category_not_found);
 
         var product = new Product();
 
-        product.setTitle(dao.getTitle());
-        product.setImageURL(dao.getImageURL());
-        product.setPrice(dao.getPrice());
+        product.setTitle(Dto.getTitle());
+        product.setImageURL(Dto.getImageURL());
+        product.setPrice(Dto.getPrice());
         product.setCategory(category.get());
 
         repository.save(product);
@@ -46,20 +46,20 @@ public class ProductService {
         return new SuccessResult(messages.success);
     }
 
-    public Result Update(ProductUpdateDao dao) {
-        var product = repository.findById(dao.getId());
+    public Result Update(ProductUpdateDto Dto) {
+        var product = repository.findById(Dto.getId());
 
         if (product.isEmpty())
             return new ErrorResult(messages.product_not_found);
 
-        var titleExists = repository.findProductByTitle(dao.getTitle());
+        var titleExists = repository.findProductByTitle(Dto.getTitle());
 
         if (titleExists != null)
             return new ErrorResult(messages.product_already_exists);
 
-        product.get().setTitle(dao.getTitle());
-        product.get().setImageURL(dao.getImageURL());
-        product.get().setPrice(dao.getPrice());
+        product.get().setTitle(Dto.getTitle());
+        product.get().setImageURL(Dto.getImageURL());
+        product.get().setPrice(Dto.getPrice());
         product.get().setModifiedDate(LocalDateTime.now());
 
         repository.save(product.get());
@@ -78,17 +78,17 @@ public class ProductService {
         return new SuccessResult(messages.success);
     }
 
-    public DataResult<List<ProductDao>> GetList() {
+    public DataResult<List<ProductDto>> GetList() {
         var products = repository.findAll();
 
-        var ProductList = new ArrayList<ProductDao>();
+        var ProductList = new ArrayList<ProductDto>();
         for (var product : products) {
             var categoryOfProduct = product.getCategory();
 
-            var productDao = new ProductDao();
+            var productDto = new ProductDto();
 
             if (categoryOfProduct != null) {
-                var categoryDao = new CategoryDao(
+                var categoryDto = new CategoryDto(
                         categoryOfProduct.getId(),
                         categoryOfProduct.getTitle(),
                         categoryOfProduct.getImageURL(),
@@ -96,34 +96,34 @@ public class ProductService {
                         categoryOfProduct.getModifiedDate()
                 );
 
-                productDao.setCategory(categoryDao);
+                productDto.setCategory(categoryDto);
             }
 
-            productDao.setId(product.getId());
-            productDao.setTitle(product.getTitle());
-            productDao.setImageURL(product.getImageURL());
-            productDao.setPrice(product.getPrice());
-            productDao.setCreatedDate(product.getCreatedDate());
-            productDao.setModifiedDate(product.getModifiedDate());
+            productDto.setId(product.getId());
+            productDto.setTitle(product.getTitle());
+            productDto.setImageURL(product.getImageURL());
+            productDto.setPrice(product.getPrice());
+            productDto.setCreatedDate(product.getCreatedDate());
+            productDto.setModifiedDate(product.getModifiedDate());
 
-            ProductList.add(productDao);
+            ProductList.add(productDto);
         }
 
-        return new SuccessDataResult<List<ProductDao>>(ProductList, messages.success);
+        return new SuccessDataResult<List<ProductDto>>(ProductList, messages.success);
     }
 
-    public DataResult<ProductDao> GetById(Integer ProductId) {
+    public DataResult<ProductDto> GetById(Integer ProductId) {
         var product = repository.findById(ProductId);
 
         if (product.isEmpty())
-            return new ErrorDataResult<ProductDao>(null, messages.product_not_found);
+            return new ErrorDataResult<ProductDto>(null, messages.product_not_found);
 
         var categoryOfProduct = product.get().getCategory();
 
-        var productDao = new ProductDao();
+        var productDto = new ProductDto();
 
         if (categoryOfProduct != null) {
-            var categoryDao = new CategoryDao(
+            var categoryDto = new CategoryDto(
                     categoryOfProduct.getId(),
                     categoryOfProduct.getTitle(),
                     categoryOfProduct.getImageURL(),
@@ -131,16 +131,16 @@ public class ProductService {
                     categoryOfProduct.getModifiedDate()
             );
 
-            productDao.setCategory(categoryDao);
+            productDto.setCategory(categoryDto);
         }
 
-        productDao.setId(product.get().getId());
-        productDao.setTitle(product.get().getTitle());
-        productDao.setImageURL(product.get().getImageURL());
-        productDao.setPrice(product.get().getPrice());
-        productDao.setCreatedDate(product.get().getCreatedDate());
-        productDao.setModifiedDate(product.get().getModifiedDate());
+        productDto.setId(product.get().getId());
+        productDto.setTitle(product.get().getTitle());
+        productDto.setImageURL(product.get().getImageURL());
+        productDto.setPrice(product.get().getPrice());
+        productDto.setCreatedDate(product.get().getCreatedDate());
+        productDto.setModifiedDate(product.get().getModifiedDate());
 
-        return new SuccessDataResult<ProductDao>(productDao, messages.success);
+        return new SuccessDataResult<ProductDto>(productDto, messages.success);
     }
 }

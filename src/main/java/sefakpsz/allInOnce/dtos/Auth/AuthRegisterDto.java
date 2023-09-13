@@ -1,4 +1,4 @@
-package sefakpsz.allInOnce.daos.Auth;
+package sefakpsz.allInOnce.dtos.Auth;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -12,7 +12,13 @@ import sefakpsz.allInOnce.utils.validations.MyNotBlank.MyNotBlank;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthLoginDao {
+public class AuthRegisterDto {
+    @MyNotBlank
+    private String firstname;
+
+    @MyNotBlank
+    private String lastname;
+
     @Email
     private String email;
 

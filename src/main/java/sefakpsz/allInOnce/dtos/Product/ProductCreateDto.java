@@ -1,4 +1,4 @@
-package sefakpsz.allInOnce.daos.Product;
+package sefakpsz.allInOnce.dtos.Product;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -9,7 +9,7 @@ import sefakpsz.allInOnce.utils.validations.MyNotBlank.MyNotBlank;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductCreateDao {
+public class ProductCreateDto {
     @MyNotBlank
     private String title;
 

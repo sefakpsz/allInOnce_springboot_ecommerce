@@ -1,4 +1,4 @@
-package sefakpsz.allInOnce.daos.User;
+package sefakpsz.allInOnce.dtos.User;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -9,7 +9,7 @@ import sefakpsz.allInOnce.utils.validations.MyNotBlank.MyNotBlank;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserChangePasswordDao {
+public class UserChangePasswordDto {
     @MyNotBlank
     private String oldPassword;
 

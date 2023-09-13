@@ -6,9 +6,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import sefakpsz.allInOnce.daos.User.UserChangePasswordDao;
+import sefakpsz.allInOnce.dtos.User.UserChangePasswordDto;
 
-import sefakpsz.allInOnce.daos.User.UserDao;
+import sefakpsz.allInOnce.dtos.User.UserDto;
 import sefakpsz.allInOnce.entities.User;
 import sefakpsz.allInOnce.repositories.UserRepository;
 import sefakpsz.allInOnce.utils.constants.messages;
@@ -23,15 +23,15 @@ public class UserService {
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
 
-    public Result ChangePassword(UserChangePasswordDao userChangePasswordDao) {
+    public Result ChangePassword(UserChangePasswordDto userChangePasswordDto) {
         var user = GettingUser.Get();
 
-        boolean isPasswordCorrect = passwordEncoder.matches(userChangePasswordDao.getOldPassword(), user.getPassword());
+        boolean isPasswordCorrect = passwordEncoder.matches(userChangePasswordDto.getOldPassword(), user.getPassword());
 
         if (!isPasswordCorrect)
             return new ErrorResult(messages.wrong_password);
 
-        String encodedNewPassword = passwordEncoder.encode(userChangePasswordDao.getNewPassword());
+        String encodedNewPassword = passwordEncoder.encode(userChangePasswordDto.getNewPassword());
 
         user.setPassword(encodedNewPassword);
 
@@ -40,17 +40,17 @@ public class UserService {
         return new SuccessResult(messages.success);
     }
 
-    public DataResult<UserDao> GetMyInfo() {
+    public DataResult<UserDto> GetMyInfo() {
         var user = GettingUser.Get();
 
-        var userDao = new UserDao();
-        userDao.setId(user.getId());
-        userDao.setFirstname(user.getFirstname());
-        userDao.setLastname(user.getLastname());
-        userDao.setEmail(user.getEmail());
-        userDao.setRole(user.getRole());
+        var userDto = new UserDto();
+        userDto.setId(user.getId());
+        userDto.setFirstname(user.getFirstname());
+        userDto.setLastname(user.getLastname());
+        userDto.setEmail(user.getEmail());
+        userDto.setRole(user.getRole());
 
-        return new SuccessDataResult(userDao, messages.success);
+        return new SuccessDataResult(userDto, messages.success);
     }
 
     public Result Delete(Integer userId) {

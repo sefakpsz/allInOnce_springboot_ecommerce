@@ -3,10 +3,10 @@ package sefakpsz.allInOnce.services;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import sefakpsz.allInOnce.daos.Category.CategoryCreateDao;
-import sefakpsz.allInOnce.daos.Category.CategoryDao;
-import sefakpsz.allInOnce.daos.Category.CategoryUpdateDao;
-import sefakpsz.allInOnce.daos.Product.ProductDao;
+import sefakpsz.allInOnce.dtos.Category.CategoryCreateDto;
+import sefakpsz.allInOnce.dtos.Category.CategoryDto;
+import sefakpsz.allInOnce.dtos.Category.CategoryUpdateDto;
+import sefakpsz.allInOnce.dtos.Product.ProductDto;
 import sefakpsz.allInOnce.entities.Category;
 import sefakpsz.allInOnce.repositories.CategoryRepository;
 import sefakpsz.allInOnce.repositories.ProductRepository;
@@ -23,11 +23,11 @@ public class CategoryService {
     private final CategoryRepository repository;
     private final ProductRepository productRepository;
 
-    public Result Create(CategoryCreateDao dao) {
+    public Result Create(CategoryCreateDto Dto) {
         var category = new Category();
 
-        category.setTitle(dao.getTitle());
-        category.setImageURL(dao.getImageURL());
+        category.setTitle(Dto.getTitle());
+        category.setImageURL(Dto.getImageURL());
 
         var titleExists = repository.findCategoryByTitle(category.getTitle());
 
@@ -39,19 +39,19 @@ public class CategoryService {
         return new SuccessResult(messages.success);
     }
 
-    public Result Update(CategoryUpdateDao dao) {
-        var category = repository.findById(dao.getCategoryId());
+    public Result Update(CategoryUpdateDto Dto) {
+        var category = repository.findById(Dto.getCategoryId());
 
         if (category.isEmpty())
             return new ErrorResult(messages.category_not_found);
 
-        var titleExists = repository.findCategoryByTitle(dao.getTitle());
+        var titleExists = repository.findCategoryByTitle(Dto.getTitle());
 
         if (titleExists != null)
             return new ErrorResult(messages.category_already_exists);
 
-        category.get().setTitle(dao.getTitle());
-        category.get().setImageURL(dao.getImageURL());
+        category.get().setTitle(Dto.getTitle());
+        category.get().setImageURL(Dto.getImageURL());
         category.get().setModifiedDate(LocalDateTime.now());
 
         repository.save(category.get());
@@ -78,39 +78,39 @@ public class CategoryService {
         return new SuccessResult(messages.success);
     }
 
-    public DataResult<List<CategoryDao>> GetList() {
+    public DataResult<List<CategoryDto>> GetList() {
         var categories = repository.findAll();
 
-        var categoryList = new ArrayList<CategoryDao>();
+        var categoryList = new ArrayList<CategoryDto>();
         for (var category : categories) {
-            var categoryDao = new CategoryDao();
+            var categoryDto = new CategoryDto();
 
-            categoryDao.setId(category.getId());
-            categoryDao.setTitle(category.getTitle());
-            categoryDao.setImageURL(category.getImageURL());
-            categoryDao.setCreatedDate(category.getCreatedDate());
-            categoryDao.setModifiedDate(category.getModifiedDate());
+            categoryDto.setId(category.getId());
+            categoryDto.setTitle(category.getTitle());
+            categoryDto.setImageURL(category.getImageURL());
+            categoryDto.setCreatedDate(category.getCreatedDate());
+            categoryDto.setModifiedDate(category.getModifiedDate());
 
-            categoryList.add(categoryDao);
+            categoryList.add(categoryDto);
         }
 
-        return new SuccessDataResult<List<CategoryDao>>(categoryList, messages.success);
+        return new SuccessDataResult<List<CategoryDto>>(categoryList, messages.success);
     }
 
-    public DataResult<CategoryDao> GetById(Integer categoryId) {
+    public DataResult<CategoryDto> GetById(Integer categoryId) {
         var category = repository.findById(categoryId);
 
         if (category.isEmpty())
-            return new ErrorDataResult<CategoryDao>(null, messages.category_not_found);
+            return new ErrorDataResult<CategoryDto>(null, messages.category_not_found);
 
-        var categoryDao = new CategoryDao();
+        var categoryDto = new CategoryDto();
 
-        categoryDao.setModifiedDate(category.get().getModifiedDate());
-        categoryDao.setCreatedDate(category.get().getCreatedDate());
-        categoryDao.setTitle(category.get().getTitle());
-        categoryDao.setImageURL(category.get().getTitle());
-        categoryDao.setId(category.get().getId());
+        categoryDto.setModifiedDate(category.get().getModifiedDate());
+        categoryDto.setCreatedDate(category.get().getCreatedDate());
+        categoryDto.setTitle(category.get().getTitle());
+        categoryDto.setImageURL(category.get().getTitle());
+        categoryDto.setId(category.get().getId());
 
-        return new SuccessDataResult<CategoryDao>(categoryDao, messages.success);
+        return new SuccessDataResult<CategoryDto>(categoryDto, messages.success);
     }
 }

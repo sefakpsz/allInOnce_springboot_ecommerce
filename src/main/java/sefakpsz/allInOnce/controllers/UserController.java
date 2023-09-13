@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import sefakpsz.allInOnce.daos.User.UserChangePasswordDao;
+import sefakpsz.allInOnce.dtos.User.UserChangePasswordDto;
 import sefakpsz.allInOnce.services.UserService;
 import sefakpsz.allInOnce.utils.results.DataResult;
 import sefakpsz.allInOnce.utils.results.Result;
@@ -25,7 +25,7 @@ public class UserController {
     }
 
     @PutMapping("/changePassword")
-    public ResponseEntity<Result> register(@Valid @RequestBody UserChangePasswordDao request) {
+    public ResponseEntity<Result> register(@Valid @RequestBody UserChangePasswordDto request) {
         var result = service.ChangePassword(request);
         return ResponseEntity.status(result.isSuccess() ? 200 : 400).body(result);
     }

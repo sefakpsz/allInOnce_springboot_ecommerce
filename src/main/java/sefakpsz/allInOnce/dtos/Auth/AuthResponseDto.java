@@ -1,4 +1,4 @@
-package sefakpsz.allInOnce.daos.Auth;
+package sefakpsz.allInOnce.dtos.Auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthResponseDao {
+public class AuthResponseDto {
     private String token;
 }

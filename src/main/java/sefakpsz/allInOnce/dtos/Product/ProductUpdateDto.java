@@ -1,6 +1,7 @@
-package sefakpsz.allInOnce.daos.Category;
+package sefakpsz.allInOnce.dtos.Product;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,12 +10,21 @@ import sefakpsz.allInOnce.utils.validations.MyNotBlank.MyNotBlank;
 import java.time.LocalDateTime;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class CategoryCreateDao {
+@NoArgsConstructor
+public class ProductUpdateDto {
+    @NotNull
+    private Integer id;
+
     @MyNotBlank
     private String title;
 
+    @NotNull
+    private Float price;
+
     @MyNotBlank
     private String imageURL;
+
+    @NotNull
+    private Integer categoryId;
 }

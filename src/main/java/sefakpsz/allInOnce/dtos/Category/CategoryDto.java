@@ -1,21 +1,22 @@
-package sefakpsz.allInOnce.daos.Product;
+package sefakpsz.allInOnce.dtos.Category;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import sefakpsz.allInOnce.daos.Category.CategoryDao;
+import sefakpsz.allInOnce.dtos.Product.ProductDto;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class ProductDao {
+@AllArgsConstructor
+public class CategoryDto {
     private Integer id;
     private String title;
-    private Float price;
     private String imageURL;
-    private CategoryDao category;
+
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
 }

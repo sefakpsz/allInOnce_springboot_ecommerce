@@ -1,4 +1,4 @@
-package sefakpsz.allInOnce.daos.User;
+package sefakpsz.allInOnce.dtos.User;
 
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -10,7 +10,7 @@ import sefakpsz.allInOnce.enums.User.Role;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDao {
+public class UserDto {
     private Integer id;
     private String firstname;
     private String lastname;
