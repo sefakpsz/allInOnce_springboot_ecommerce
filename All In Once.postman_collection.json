@@ -12,6 +12,18 @@
 			"item": [
 				{
 					"name": "Sign In",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"pm.collectionVariables.set(\"token\",response.data.token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -20,7 +32,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\":\"\",\r\n    \"password\":\"\"\r\n}",
+							"raw": "{\r\n    \"email\":\"test@mail.com\",\r\n    \"password\":\"test\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -47,7 +59,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"firstname\":\"\",\r\n    \"lastname\":\"\",\r\n    \"email\":\"\",\r\n    \"password\":\"\"\r\n}",
+							"raw": "{\r\n    \"firstname\":\"test\",\r\n    \"lastname\":\"test\",\r\n    \"email\":\"test@mail.com\",\r\n    \"password\":\"test\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -251,7 +263,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\":\"1\",\r\n    \"title\": \"s\",\r\n    \"price\": 0,\r\n    \"imageURL\": \"\"\r\n}",
+							"raw": "{\r\n    \"id\": \"352\",\r\n    \"title\": \"test\",\r\n    \"price\": 0,\r\n    \"imageURL\": \"test\",\r\n    \"categoryId\": 152\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -286,7 +298,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/product/delete?productId=303",
+							"raw": "{{url}}/product/delete?productId=352",
 							"host": [
 								"{{url}}"
 							],
@@ -297,7 +309,7 @@
 							"query": [
 								{
 									"key": "productId",
-									"value": "303"
+									"value": "352"
 								}
 							]
 						}
