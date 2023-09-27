@@ -6,11 +6,10 @@ import sefakpsz.allInOnce.dtos.Category.CategoryDto;
 import sefakpsz.allInOnce.dtos.Product.ProductCreateDto;
 import sefakpsz.allInOnce.dtos.Product.ProductDto;
 import sefakpsz.allInOnce.dtos.Product.ProductUpdateDto;
-import sefakpsz.allInOnce.dtos.Product.ProductUpdateDto;
 import sefakpsz.allInOnce.entities.Product;
 import sefakpsz.allInOnce.repositories.CategoryRepository;
 import sefakpsz.allInOnce.repositories.ProductRepository;
-import sefakpsz.allInOnce.utils.constants.messages;
+import sefakpsz.allInOnce.utils.constants.Messages;
 import sefakpsz.allInOnce.utils.results.*;
 
 import java.time.LocalDateTime;
@@ -27,12 +26,12 @@ public class ProductService {
         var titleExists = repository.findProductByTitle(Dto.getTitle());
 
         if (titleExists != null)
-            return new ErrorResult(messages.product_already_exists);
+            return new ErrorResult(Messages.product_already_exists.toString());
 
         var category = categoryRepository.findById(Dto.getCategoryId());
 
         if (category.isEmpty())
-            return new ErrorResult(messages.category_not_found);
+            return new ErrorResult(Messages.category_not_found.toString());
 
         var product = new Product();
 
@@ -43,19 +42,19 @@ public class ProductService {
 
         repository.save(product);
 
-        return new SuccessResult(messages.success);
+        return new SuccessResult(Messages.success.toString());
     }
 
     public Result Update(ProductUpdateDto Dto) {
         var product = repository.findById(Dto.getId());
 
         if (product.isEmpty())
-            return new ErrorResult(messages.product_not_found);
+            return new ErrorResult(Messages.product_not_found.toString());
 
         var titleExists = repository.findProductByTitle(Dto.getTitle());
 
         if (titleExists != null)
-            return new ErrorResult(messages.product_already_exists);
+            return new ErrorResult(Messages.product_already_exists.toString());
 
         product.get().setTitle(Dto.getTitle());
         product.get().setImageURL(Dto.getImageURL());
@@ -64,18 +63,18 @@ public class ProductService {
 
         repository.save(product.get());
 
-        return new SuccessResult(messages.success);
+        return new SuccessResult(Messages.success.toString());
     }
 
     public Result Delete(Integer ProductId) {
         var product = repository.findById(ProductId);
 
         if (product.isEmpty())
-            return new ErrorResult(messages.product_not_found);
+            return new ErrorResult(Messages.product_not_found.toString());
 
         repository.delete(product.get());
 
-        return new SuccessResult(messages.success);
+        return new SuccessResult(Messages.success.toString());
     }
 
     public DataResult<List<ProductDto>> GetList() {
@@ -109,14 +108,14 @@ public class ProductService {
             ProductList.add(productDto);
         }
 
-        return new SuccessDataResult<List<ProductDto>>(ProductList, messages.success);
+        return new SuccessDataResult<List<ProductDto>>(ProductList, Messages.success.toString());
     }
 
     public DataResult<ProductDto> GetById(Integer ProductId) {
         var product = repository.findById(ProductId);
 
         if (product.isEmpty())
-            return new ErrorDataResult<ProductDto>(null, messages.product_not_found);
+            return new ErrorDataResult<ProductDto>(null, Messages.product_not_found.toString());
 
         var categoryOfProduct = product.get().getCategory();
 
@@ -141,6 +140,6 @@ public class ProductService {
         productDto.setCreatedDate(product.get().getCreatedDate());
         productDto.setModifiedDate(product.get().getModifiedDate());
 
-        return new SuccessDataResult<ProductDto>(productDto, messages.success);
+        return new SuccessDataResult<ProductDto>(productDto, Messages.success.toString());
     }
 }

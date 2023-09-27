@@ -1,7 +1,6 @@
 package sefakpsz.allInOnce.services;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 import sefakpsz.allInOnce.dtos.Category.CategoryDto;
 import sefakpsz.allInOnce.dtos.Order.OrderCreateDto;
@@ -11,13 +10,12 @@ import sefakpsz.allInOnce.dtos.Order.OrderUpdateStatusDto;
 import sefakpsz.allInOnce.dtos.Product.ProductDto;
 import sefakpsz.allInOnce.dtos.User.UserDto;
 import sefakpsz.allInOnce.entities.Order;
-import sefakpsz.allInOnce.entities.Product;
 import sefakpsz.allInOnce.entities.ProductOrders;
 import sefakpsz.allInOnce.enums.Order.OrderStatus;
 import sefakpsz.allInOnce.repositories.OrderRepository;
 import sefakpsz.allInOnce.repositories.ProductOrdersRepository;
 import sefakpsz.allInOnce.repositories.ProductRepository;
-import sefakpsz.allInOnce.utils.constants.messages;
+import sefakpsz.allInOnce.utils.constants.Messages;
 import sefakpsz.allInOnce.utils.functions.GettingUser;
 import sefakpsz.allInOnce.utils.results.*;
 
@@ -41,10 +39,10 @@ public class OrderService {
             var lastOrderOfUser = (Order) ordersOfUser.toArray()[ordersOfUserSize - 1];
 
             if (lastOrderOfUser.getStatus() == OrderStatus.Waiting)
-                return new ErrorResult(messages.order_already_exists);
+                return new ErrorResult(Messages.order_already_exists.toString());
         }
         if (!controlOfProductExistence(Dto.getProductIds()))
-            return new ErrorResult(messages.product_not_found);
+            return new ErrorResult(Messages.product_not_found.toString());
 
         var order = new Order();
         order.setUser(user);
@@ -63,7 +61,7 @@ public class OrderService {
             productOrdersRepository.save(productOrders);
         }
 
-        return new SuccessResult(messages.success);
+        return new SuccessResult(Messages.success.toString());
     }
 
     public Result UpdateProducts(OrderUpdateProductsDto Dto) {
@@ -72,13 +70,13 @@ public class OrderService {
         var orderFromDb = repository.findById(Dto.getOrderId());
 
         if (orderFromDb.isEmpty())
-            return new ErrorResult(messages.order_not_found);
+            return new ErrorResult(Messages.order_not_found.toString());
 
         if (orderFromDb.get().getStatus() != OrderStatus.Waiting)
-            return new ErrorResult(messages.order_cant_update);
+            return new ErrorResult(Messages.order_cant_update.toString());
 
         if (!controlOfProductExistence(Dto.getProductIds()))
-            return new ErrorResult(messages.product_not_found);
+            return new ErrorResult(Messages.product_not_found.toString());
 
         var productOrders = productOrdersRepository.findProductOrdersByOrderId(Dto.getOrderId());
 
@@ -100,7 +98,7 @@ public class OrderService {
             }
         }*/
 
-        return new SuccessResult(messages.success);
+        return new SuccessResult(Messages.success.toString());
     }
 
     public Result UpdateStatus(OrderUpdateStatusDto Dto) {
@@ -109,27 +107,27 @@ public class OrderService {
         var orderFromDb = repository.findById(Dto.getId());
 
         if (orderFromDb.isEmpty())
-            return new ErrorResult(messages.order_not_found);
+            return new ErrorResult(Messages.order_not_found.toString());
 
         if (orderFromDb.get().getStatus() != OrderStatus.Waiting)
-            return new ErrorResult(messages.order_cant_update);
+            return new ErrorResult(Messages.order_cant_update.toString());
 
         orderFromDb.get().setStatus(Dto.getStatus());
 
         repository.save(orderFromDb.get());
 
-        return new SuccessResult(messages.success);
+        return new SuccessResult(Messages.success.toString());
     }
 
     public Result Delete(Integer OrderId) {
         var Order = repository.findById(OrderId);
 
         if (Order.isEmpty())
-            return new ErrorResult(messages.order_not_found);
+            return new ErrorResult(Messages.order_not_found.toString());
 
         repository.delete(Order.get());
 
-        return new SuccessResult(messages.success);
+        return new SuccessResult(Messages.success.toString());
     }
 
     public DataResult<ArrayList<OrderDto>> GetList() {
@@ -159,14 +157,14 @@ public class OrderService {
             orderList.add(orderDto);
         }
 
-        return new SuccessDataResult<ArrayList<OrderDto>>(orderList, messages.success);
+        return new SuccessDataResult<ArrayList<OrderDto>>(orderList, Messages.success.toString());
     }
 
     public DataResult<OrderDto> GetById(Integer orderId) {
         var order = repository.findById(orderId);
 
         if (order.isEmpty())
-            return new ErrorDataResult<OrderDto>(null, messages.order_not_found);
+            return new ErrorDataResult<OrderDto>(null, Messages.order_not_found.toString());
 
         var orderDto = new OrderDto();
         var orderUser = order.get().getUser();
@@ -187,7 +185,7 @@ public class OrderService {
 
         orderDto.setProducts(mappingProductsOfOrder(order.get()));
 
-        return new SuccessDataResult<OrderDto>(orderDto, messages.success);
+        return new SuccessDataResult<OrderDto>(orderDto, Messages.success.toString());
     }
 
     private boolean controlOfProductExistence(List<Integer> productIds) {

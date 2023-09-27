@@ -8,7 +8,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import sefakpsz.allInOnce.utils.constants.messages;
+import sefakpsz.allInOnce.utils.constants.Messages;
 import sefakpsz.allInOnce.utils.results.ErrorResult;
 import sefakpsz.allInOnce.utils.results.Result;
 
@@ -18,13 +18,13 @@ public class ExceptionMiddleware {
     @ExceptionHandler(value = {RuntimeException.class, VirtualMachineError.class})
     public ResponseEntity<Result> handleRuntimeException() {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                new ErrorResult(messages.error));
+                new ErrorResult(Messages.error.toString()));
     }
 
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<Result> handleAuthenticationException() {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
-                new ErrorResult(messages.wrong_password));
+                new ErrorResult(Messages.wrong_password.toString()));
     }
 
     @ExceptionHandler(value = EntityNotFoundException.class)

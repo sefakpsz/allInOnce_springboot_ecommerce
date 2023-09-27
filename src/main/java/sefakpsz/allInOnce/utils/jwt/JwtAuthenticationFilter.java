@@ -16,7 +16,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import sefakpsz.allInOnce.utils.constants.messages;
+import sefakpsz.allInOnce.utils.constants.Messages;
 import sefakpsz.allInOnce.utils.results.ErrorResult;
 import sefakpsz.allInOnce.utils.results.Result;
 
@@ -71,7 +71,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType("application/json");
             ObjectMapper objectMapper = new ObjectMapper();
-            Result errorResult = new ErrorResult(messages.invalid_token);
+            Result errorResult = new ErrorResult(Messages.invalid_token.toString());
             response.getWriter().write(objectMapper.writeValueAsString(errorResult));
             return; // Stop processing further in the filter chain
         }

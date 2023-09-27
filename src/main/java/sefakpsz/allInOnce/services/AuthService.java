@@ -11,11 +11,10 @@ import sefakpsz.allInOnce.dtos.Auth.AuthRegisterDto;
 import sefakpsz.allInOnce.dtos.Auth.AuthResponseDto;
 import sefakpsz.allInOnce.enums.User.Role;
 import sefakpsz.allInOnce.repositories.UserRepository;
-import sefakpsz.allInOnce.utils.constants.messages;
+import sefakpsz.allInOnce.utils.constants.Messages;
 import sefakpsz.allInOnce.utils.jwt.JwtService;
 import sefakpsz.allInOnce.utils.results.DataResult;
 import sefakpsz.allInOnce.utils.results.ErrorDataResult;
-import sefakpsz.allInOnce.utils.results.ErrorResult;
 import sefakpsz.allInOnce.utils.results.SuccessDataResult;
 
 @Service
@@ -42,14 +41,14 @@ public class AuthService {
 
         return new SuccessDataResult<AuthResponseDto>(AuthResponseDto.builder()
                 .token(jwtToken)
-                .build(), messages.success);
+                .build(), Messages.success.toString());
     }
 
     public DataResult<AuthResponseDto> signIn(AuthLoginDto request) {
         var user = repository.findByEmail(request.getEmail());
 
         if (user.toString().equals("Optional.empty"))
-            return new ErrorDataResult<AuthResponseDto>(null, messages.email_not_found);
+            return new ErrorDataResult<AuthResponseDto>(null, Messages.email_not_found.toString());
 
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -62,7 +61,7 @@ public class AuthService {
 
         return new SuccessDataResult<AuthResponseDto>(AuthResponseDto.builder()
                 .token(jwtToken)
-                .build(), messages.success);
+                .build(), Messages.success.toString());
     }
 }
 

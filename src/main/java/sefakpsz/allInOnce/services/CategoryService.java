@@ -1,16 +1,14 @@
 package sefakpsz.allInOnce.services;
 
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import sefakpsz.allInOnce.dtos.Category.CategoryCreateDto;
 import sefakpsz.allInOnce.dtos.Category.CategoryDto;
 import sefakpsz.allInOnce.dtos.Category.CategoryUpdateDto;
-import sefakpsz.allInOnce.dtos.Product.ProductDto;
 import sefakpsz.allInOnce.entities.Category;
 import sefakpsz.allInOnce.repositories.CategoryRepository;
 import sefakpsz.allInOnce.repositories.ProductRepository;
-import sefakpsz.allInOnce.utils.constants.messages;
+import sefakpsz.allInOnce.utils.constants.Messages;
 import sefakpsz.allInOnce.utils.results.*;
 
 import java.time.LocalDateTime;
@@ -32,23 +30,23 @@ public class CategoryService {
         var titleExists = repository.findCategoryByTitle(category.getTitle());
 
         if (titleExists != null)
-            return new ErrorResult(messages.category_already_exists);
+            return new ErrorResult(Messages.category_already_exists.toString());
 
         repository.save(category);
 
-        return new SuccessResult(messages.success);
+        return new SuccessResult(Messages.success.toString());
     }
 
     public Result Update(CategoryUpdateDto Dto) {
         var category = repository.findById(Dto.getCategoryId());
 
         if (category.isEmpty())
-            return new ErrorResult(messages.category_not_found);
+            return new ErrorResult(Messages.category_not_found.toString());
 
         var titleExists = repository.findCategoryByTitle(Dto.getTitle());
 
         if (titleExists != null)
-            return new ErrorResult(messages.category_already_exists);
+            return new ErrorResult(Messages.category_already_exists.toString());
 
         category.get().setTitle(Dto.getTitle());
         category.get().setImageURL(Dto.getImageURL());
@@ -56,14 +54,14 @@ public class CategoryService {
 
         repository.save(category.get());
 
-        return new SuccessResult(messages.success);
+        return new SuccessResult(Messages.success.toString());
     }
 
     public Result Delete(Integer categoryId) {
         var category = repository.findById(categoryId);
 
         if (category.isEmpty())
-            return new ErrorResult(messages.category_not_found);
+            return new ErrorResult(Messages.category_not_found.toString());
 
         var productsOfTheCategory = productRepository.findProductsByCategory(category.get());
 
@@ -75,7 +73,7 @@ public class CategoryService {
 
         repository.delete(category.get());
 
-        return new SuccessResult(messages.success);
+        return new SuccessResult(Messages.success.toString());
     }
 
     public DataResult<List<CategoryDto>> GetList() {
@@ -94,14 +92,14 @@ public class CategoryService {
             categoryList.add(categoryDto);
         }
 
-        return new SuccessDataResult<List<CategoryDto>>(categoryList, messages.success);
+        return new SuccessDataResult<List<CategoryDto>>(categoryList, Messages.success.toString());
     }
 
     public DataResult<CategoryDto> GetById(Integer categoryId) {
         var category = repository.findById(categoryId);
 
         if (category.isEmpty())
-            return new ErrorDataResult<CategoryDto>(null, messages.category_not_found);
+            return new ErrorDataResult<CategoryDto>(null, Messages.category_not_found.toString());
 
         var categoryDto = new CategoryDto();
 
@@ -111,6 +109,6 @@ public class CategoryService {
         categoryDto.setImageURL(category.get().getTitle());
         categoryDto.setId(category.get().getId());
 
-        return new SuccessDataResult<CategoryDto>(categoryDto, messages.success);
+        return new SuccessDataResult<CategoryDto>(categoryDto, Messages.success.toString());
     }
 }
